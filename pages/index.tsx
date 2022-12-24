@@ -84,9 +84,6 @@ export default function Home({ mealsJSON, mealsGroupJSON, weightJSON } :
             </div>
             <main className="z-[1] p-6 flex flex-col gap-10 pb-20">
                 <section>
-                    <h1 className="font-bold text-xl mb-3">
-                        Como a Lola está?
-                    </h1>
                         <FillBowlCard mealWeight={weight}/>
                 </section>
                 <section>
