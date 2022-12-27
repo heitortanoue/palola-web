@@ -11,7 +11,7 @@ export default function LastMealsCard ({ meal } : { meal: Meal }) {
     const { text: statusText, color: statusColor, bgColor: statusBg } = mealStatusToString(meal.status)
 
     return (
-        <WhiteCard className={"!pb-0 !px-0"}>
+        <WhiteCard className={"!pb-0 !px-0 flex flex-col justify-between"}>
             <div className="px-5">
                 <div className={`h-9 w-9 rounded-md flex mb-1`} style={{ backgroundColor: color }}>
                     <i className={`fa-solid fa-${icon} text-white text-xl m-auto`}/>

@@ -10,7 +10,8 @@ export enum MealStatus {
 export enum MealGroup {
     BREAKFAST = "breakfast",
     LUNCH = "lunch",
-    DINNER = "dinner"
+    DINNER = "dinner",
+    MANUAL = "manual"
 }
 
 export interface Meal {

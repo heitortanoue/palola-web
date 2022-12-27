@@ -54,6 +54,11 @@ export function mealCardByTypeObject (mealGp: string) {
                 icon: "moon",
                 color: COLORS.tertiary
             })
+        case MealGroup.MANUAL:
+            return ({
+                icon: "bowl-food",
+                color: COLORS.gray
+            })
         default:
             return ({
                 icon: "x",
@@ -70,6 +75,8 @@ export function mealGroupToString(group: MealGroup): string {
             return "Almoço";
         case MealGroup.DINNER:
             return "Jantar";
+        case MealGroup.MANUAL:
+            return "Manual"
         default:
             return "Erro";
     }

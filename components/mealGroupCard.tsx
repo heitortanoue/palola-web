@@ -5,6 +5,7 @@ import { mealGroupToString, mealCardByTypeObject, mealStatusToString } from "../
 import WhiteCard from "./gereral/whiteCard";
 import WhiteCardTopBorder from "./gereral/whiteCardTopBorder";
 import { addOpacityHex } from "../utils/colorFunctions";
+import Link from "next/link";
 
 export default function MealGroupCard ({ mealGroup } : { mealGroup: MealGroupObject }) {
     moment.locale("pt-br")
@@ -18,7 +19,8 @@ export default function MealGroupCard ({ mealGroup } : { mealGroup: MealGroupObj
     }
 
     return (
-        <WhiteCardTopBorder color={color}>
+        <Link href={`/editar-refeicao?id=${mealGroup.id}`} passHref>
+        <WhiteCardTopBorder color={color} className="cursor-pointer">
             <div className="flex items-center justify-between">
                 <div className="flex gap-4">
                     <div className="rounded-md h-10 w-10 flex" style={{ backgroundColor: color }}>
@@ -48,5 +50,6 @@ export default function MealGroupCard ({ mealGroup } : { mealGroup: MealGroupObj
                 </div>
             </div>       
         </WhiteCardTopBorder>
+        </Link>
     )
 }
