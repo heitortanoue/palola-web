@@ -1,5 +1,5 @@
 import moment from "moment"
-import { Meal, MealGroup, MealStatus, mealWeight } from "../utils/types"
+import { MachineStatus, Meal, MealGroup, MealStatus, mealWeight } from "../utils/types"
 import WhiteCard from "./gereral/whiteCard"
 import Image from "next/image"
 import { buttonStyles } from "../styles/styles"
@@ -7,10 +7,14 @@ import Button from "./gereral/button"
 import { addMeal } from "../utils/firebaseFunctions"
 import { useAlert } from "@blaumaus/react-alert"
 import axios from "axios"
+import { machineStatusToObject } from "../utils/mealsTranslation"
 
-export default function FillBowlCard ({ mealWeight } : { mealWeight: mealWeight }) {
+export default function FillBowlCard ({ mealWeight, machineStatus } :
+    { mealWeight: mealWeight, machineStatus: MachineStatus }) {
+        
     const weightPercentage = Math.round((mealWeight.current - mealWeight.tare)/mealWeight.max * 100)
     const weightDate = moment(mealWeight.lastUpdate)
+    const { icon, color, bgColor, text } = machineStatusToObject(machineStatus)
     const alert = useAlert()
 
     const fillFunction = async () => {
@@ -48,6 +52,15 @@ export default function FillBowlCard ({ mealWeight } : { mealWeight: mealWeight 
             <p className="text-center text-xs text-gray mt-2">
                 Atualizado {weightDate.fromNow()}
             </p>
+            <div className="mt-4 flex justify-center">
+                <div className="flex gap-3 py-1 px-3 w-fit rounded-md items-center text-sm"
+                style={{ color, backgroundColor: bgColor }}>
+                    <i className={`fa-solid fa-${icon}`}/>
+                    <div className="text-xs font-medium">
+                        Máquina {text}
+                    </div>
+                </div>
+            </div>
         </WhiteCard>
     )
 }

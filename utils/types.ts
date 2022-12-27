@@ -7,6 +7,11 @@ export enum MealStatus {
     ALREADY_FULL = 3
 }
 
+export enum MachineStatus {
+    FREE = 0,
+    BUSY = 1,
+}
+
 export enum MealGroup {
     BREAKFAST = "breakfast",
     LUNCH = "lunch",

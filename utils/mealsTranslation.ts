@@ -1,5 +1,5 @@
 import moment from "moment";
-import { MealStatus, MealGroup, Meal, MealGroupObject } from "./types";
+import { MealStatus, MealGroup, Meal, MealGroupObject, MachineStatus } from "./types";
 const COLORS = require("./colors");
 
 export function mealStatusToString(status: MealStatus) {
@@ -31,6 +31,32 @@ export function mealStatusToString(status: MealStatus) {
         default:
             return {
                 text: "Erro",
+                color: COLORS.gray,
+                bgColor: "#f5f5f5"
+            };
+    }
+}
+
+export function machineStatusToObject (status: MachineStatus) {
+    switch (status) {
+        case MachineStatus.FREE:
+            return {
+                text: "livre",
+                icon: "check",
+                color: COLORS.green,
+                bgColor: COLORS.greenLight
+            }
+        case MachineStatus.BUSY:
+            return {
+                text: "ocupada",
+                icon: "arrows-rotate",
+                color: COLORS.yellow,
+                bgColor: COLORS.yellowLight
+            }
+        default:
+            return {
+                text: "Erro",
+                icon: "x",
                 color: COLORS.gray,
                 bgColor: "#f5f5f5"
             };

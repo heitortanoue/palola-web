@@ -1,6 +1,6 @@
 import { database } from "../utils/firebaseConfig"
-import { Meal, MealGroupObject, mealWeight } from "../utils/types";
-import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
+import { MachineStatus, Meal, MealGroupObject, mealWeight } from "../utils/types";
+import { collection, getDocs, query, orderBy, limit, getDoc, doc } from "firebase/firestore";
 import { textStyles } from "../styles/styles"
 
 import NextMealCard from "../components/nextMealCard";
@@ -35,32 +35,33 @@ export async function getServerSideProps() {
         } as MealGroupObject
     })
 
-    const weightQuery = await getDocs(query(collection(database, "weight")))
-    const weightData = weightQuery.docs.map((weight) => {
-        return {
-            id: weight.id,
-            ...weight.data()
-        } as any
-    }).map((meal) => {
-        return {
-            ...meal,
-            lastUpdate: new Date(meal.lastUpdate.seconds * 1000)
-        } as mealWeight
-    })[0]
+    const weightQuery = await getDoc(doc(database, "weight", "weightStatus"))
+    const weightData = weightQuery.data()
+    // turn firebase timestamp into date
+    if (weightData && weightData.lastUpdate) {
+        weightData.lastUpdate = new Date(weightData.lastUpdate.seconds * 1000)
+    }
+
+    const machineStatus = await getDoc(doc(database, "machine", "machineStatus"))
+    let machineStatusData : MachineStatus = 0
+    if (machineStatus.exists()) {
+        machineStatusData = machineStatus.data().status
+    }
 
     return ({
         props: {
             mealsJSON: null || JSON.stringify(mealsData),
             mealsGroupJSON: null || JSON.stringify(mealsGroupData),
-            weightJSON: null || JSON.stringify(weightData)
+            weightJSON: null || JSON.stringify(weightData),
+            machineStatusJSON: null || JSON.stringify(machineStatusData)
         }
     })
 }
 
-export default function Home({ mealsJSON, mealsGroupJSON, weightJSON } :
-    { mealsJSON: string, mealsGroupJSON: string, weightJSON: string }) {
+export default function Home({ mealsJSON, mealsGroupJSON, weightJSON, machineStatusJSON } :
+    { mealsJSON: string, mealsGroupJSON: string, weightJSON: string, machineStatusJSON: string }) {
 
-    if (!mealsJSON || !mealsGroupJSON || !weightJSON) {
+    if (!mealsJSON || !mealsGroupJSON || !weightJSON || !machineStatusJSON) {
         return (
             <Layout disableBackButton={true}>
                 <h1 className={textStyles.h1}>
@@ -72,6 +73,7 @@ export default function Home({ mealsJSON, mealsGroupJSON, weightJSON } :
     const meals = JSON.parse(mealsJSON) as Meal[]
     const mealsGroup = JSON.parse(mealsGroupJSON) as MealGroupObject[]
     const weight = JSON.parse(weightJSON) as mealWeight
+    const machineStatus = JSON.parse(machineStatusJSON) as MachineStatus
 
     moment.locale("pt-br")
 
@@ -79,7 +81,7 @@ export default function Home({ mealsJSON, mealsGroupJSON, weightJSON } :
         <Layout disableBackButton={true}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 <section>
-                    <FillBowlCard mealWeight={weight}/>
+                    <FillBowlCard mealWeight={weight} machineStatus={machineStatus}/>
                 </section>
                 <section>
                     <h2 className={textStyles.h2 + " mb-3"}>
