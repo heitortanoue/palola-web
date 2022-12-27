@@ -1,66 +1,119 @@
-import Head from "next/head";
-import Image from "next/image";
+import { database } from "../utils/firebaseConfig"
+import { MachineStatus, Meal, MealGroupObject, mealWeight } from "../utils/types";
+import { collection, getDocs, query, orderBy, limit, getDoc, doc } from "firebase/firestore";
+import { textStyles } from "../styles/styles"
 
-export default function Home() {
-    const ultimasRefeicoes = [
-        {
-            id: 1,
-            data: "2021-09-01",
-            hora: "12:00",
-            grupo: "Almoço",
-        },
-        {
-            id: 2,
-            data: "2021-09-01",
-            hora: "12:00",
-            grupo: "Almoço",
-        },
-    ]
+import NextMealCard from "../components/nextMealCard";
+import MealGroupCard from "../components/mealGroupCard";
+import LastMealsCard from "../components/lastMealsCard";
+import FillBowlCard from "../components/fillBowlCard";
+
+import moment from "moment";
+import "moment/locale/pt-br"
+import { getNextMeal } from "../utils/mealsTranslation";
+import Layout from "../components/gereral/layout";
+
+export async function getServerSideProps() {
+    const meals = await getDocs(query(collection(database, "meals"), orderBy("date", "desc"), limit(4)))
+    const mealsData = meals.docs.map((meal) => {
+        return {
+            id: meal.id,
+            ...meal.data()
+        } as any
+    }).map((meal) => {
+        return {
+            ...meal,
+            date: new Date(meal.date.seconds * 1000)
+        } as Meal
+    })
+
+    const mealsGroup = await getDocs(query(collection(database, "groups"), orderBy("date.hours", "asc")))
+    const mealsGroupData = mealsGroup.docs.map((meal) => {
+        return {
+            id: meal.id,
+            ...meal.data()
+        } as MealGroupObject
+    })
+
+    const weightQuery = await getDoc(doc(database, "weight", "weightStatus"))
+    const weightData = weightQuery.data()
+    // turn firebase timestamp into date
+    if (weightData && weightData.lastUpdate) {
+        weightData.lastUpdate = new Date(weightData.lastUpdate.seconds * 1000)
+    }
+
+    const machineStatus = await getDoc(doc(database, "machine", "machineStatus"))
+    let machineStatusData : MachineStatus = 0
+    if (machineStatus.exists()) {
+        machineStatusData = machineStatus.data().status
+    }
+
+    return ({
+        props: {
+            mealsJSON: null || JSON.stringify(mealsData),
+            mealsGroupJSON: null || JSON.stringify(mealsGroupData),
+            weightJSON: null || JSON.stringify(weightData),
+            machineStatusJSON: null || JSON.stringify(machineStatusData)
+        }
+    })
+}
+
+export default function Home({ mealsJSON, mealsGroupJSON, weightJSON, machineStatusJSON } :
+    { mealsJSON: string, mealsGroupJSON: string, weightJSON: string, machineStatusJSON: string }) {
+
+    if (!mealsJSON || !mealsGroupJSON || !weightJSON || !machineStatusJSON) {
+        return (
+            <Layout disableBackButton={true}>
+                <h1 className={textStyles.h1}>
+                    Ocorreu um erro, tente novamente.
+                </h1>
+            </Layout>
+        )
+    }    
+    const meals = JSON.parse(mealsJSON) as Meal[]
+    const mealsGroup = JSON.parse(mealsGroupJSON) as MealGroupObject[]
+    const weight = JSON.parse(weightJSON) as mealWeight
+    const machineStatus = JSON.parse(machineStatusJSON) as MachineStatus
+
+    moment.locale("pt-br")
 
     return (
-        <>
-        <Head>
-            <title>Palola - Alimente seu cão</title>
-            <link rel="icon" href="/icon.png" />
-        </Head>
-
-        <div>
-            <div className="w-full">
-                <div className="relative overflow-hidden">
-                    <div className="bg-primary flex justify-center items-center pt-7 pb-20 
-                    text-white text-xl font-bold">
-                        Palola ©
-                    </div>
-                    <div className="absolute w-[100vw] scale-x-[2.5] bg-white
-                    inset-x-0 mx-auto rounded-full top-20 h-[100vw]"/>
-                </div>
-            </div>
-            <main className="z-[1] p-6">
-                <section className="pb-8">
-                    <h1 className="font-bold text-xl mb-3">
-                        Como a Lola está?
-                    </h1>
+        <Layout disableBackButton={true}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <section>
+                    <FillBowlCard mealWeight={weight} machineStatus={machineStatus}/>
                 </section>
                 <section>
-                    <h2 className="font-bold text-xl mb-3">
-                        Últimas refeições
+                    <h2 className={textStyles.h2 + " mb-3"}>
+                        Próxima refeição
                     </h2>
-                    <div className="flex flex-col gap-3">
-                        {ultimasRefeicoes.map((refeicao) => (
-                            <div key={refeicao.id} className="flex gap-5 rounded-md bg-secondary/20 p-5 items-center">
-                                <div className="h-12 w-12 rounded-sm bg-secondary flex">
-                                    <i className="fa-solid fa-sun text-white text-3xl m-auto"/>
-                                </div>
-                                <div className="flex flex-col">
-                                    <span className="font-bold">{refeicao.grupo}</span>
-                                    <span className="text-sm">{refeicao.data} - {refeicao.hora}</span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    <NextMealCard meal={getNextMeal(mealsGroup)}/>
                 </section>
-            </main>
-        </div>
-        </>
+            </div>
+            <section>
+                <h2 className={textStyles.h2 + " mb-3"}>
+                    Grupos de refeições
+                </h2>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+                    {
+                        mealsGroup.map(gp => <MealGroupCard mealGroup={gp} key={gp.id}/>)
+                    }
+                </div>
+            </section>
+            <section>
+                <h2 className={textStyles.h2 + " mb-3"}>
+                    Últimas refeições
+                </h2>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                    {
+                        meals.map((meal) => {
+                            return (
+                                <LastMealsCard meal={meal} key={meal.id}/>
+                            )
+                        })
+                    }
+                </div>
+            </section>
+        </Layout>
     );
 }
