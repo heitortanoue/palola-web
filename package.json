@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@blaumaus/react-alert": "^7.0.5",
     "@next/font": "13.0.7",
     "@types/firebase": "^3.2.1",
     "@types/node": "18.11.17",
@@ -19,8 +20,7 @@
     "moment": "^2.29.4",
     "next": "13.0.7",
     "react": "18.2.0",
-    "react-alert": "^7.0.3",
-    "react-alert-template-basic": "^1.0.2",
+    "react-alert-template-mui": "^1.0.7",
     "react-dom": "18.2.0",
     "typescript": "4.9.4"
   },

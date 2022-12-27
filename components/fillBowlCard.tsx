@@ -5,7 +5,7 @@ import Image from "next/image"
 import { buttonStyles } from "../styles/styles"
 import Button from "./gereral/button"
 import { addMeal } from "../utils/firebaseFunctions"
-import { useAlert } from "react-alert"
+import { useAlert } from "@blaumaus/react-alert"
 import axios from "axios"
 
 export default function FillBowlCard ({ mealWeight } : { mealWeight: mealWeight }) {

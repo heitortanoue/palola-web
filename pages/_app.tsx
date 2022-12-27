@@ -1,7 +1,7 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { transitions, positions, Provider as AlertProvider } from "react-alert"
-import AlertTemplate from "react-alert-template-basic"
+import { transitions, positions, Provider as AlertProvider } from "@blaumaus/react-alert"
+import AlertTemplate from "react-alert-template-mui"
 
 export default function App({ Component, pageProps }: AppProps) {
     // optional configuration

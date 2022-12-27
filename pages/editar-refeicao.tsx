@@ -11,7 +11,7 @@ import MealIcon from "../components/gereral/mealIcon";
 import WhiteCard from "../components/gereral/whiteCard";
 import Button from "../components/gereral/button";
 import { useState } from "react";
-import { useAlert } from "react-alert"
+import { useAlert } from "@blaumaus/react-alert"
 
 export async function getServerSideProps( context : GetServerSidePropsContext ) {
     const queries = context.query
