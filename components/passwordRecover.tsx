@@ -4,7 +4,7 @@ import { useAlert } from "@blaumaus/react-alert";
 import { auth } from "../utils/firebaseConfig";
 import Button from "./gereral/button";
 
-export default function PasswordRecover ({ setRecoverPopUp }) {
+export default function PasswordRecover ({ setRecoverPopUp } : { setRecoverPopUp: any }) {
     const alert = useAlert()
 
     const onSubmit = (e) => {
