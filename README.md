@@ -7,9 +7,9 @@
 > Plataforma para uso do dispositivo dispensador automático de ração: Palola.
 
 <div align="center">
-  <img src="public/palola-banner.png" height="350em" align="center"/>
-  <img src="https://user-images.githubusercontent.com/68477006/209859787-fdf79484-cfda-44c6-8073-bef8e182ab79.png" height="350em" align="center"/>
-  <img src="https://user-images.githubusercontent.com/68477006/209860005-758afeb4-8a47-487c-8b5b-462d416a5a94.png" height="350em" align="center"/>
+  <img src="public/palola-banner.png" height="320em" align="center"/>
+  <img src="https://user-images.githubusercontent.com/68477006/209859787-fdf79484-cfda-44c6-8073-bef8e182ab79.png" height="320em" align="center"/>
+  <img src="https://user-images.githubusercontent.com/68477006/209860005-758afeb4-8a47-487c-8b5b-462d416a5a94.png" height="320em" align="center"/>
 </div>
 
 ## Funcionalidades 🧰
