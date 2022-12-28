@@ -17,6 +17,7 @@ const COLORS = {
 
     black: "#202020",
     gray: "#636363",
+    grayLight: "#AFAFAF",
     background: "#F6F6F6",
 };
 

@@ -12,6 +12,7 @@ import WhiteCard from "../components/gereral/whiteCard";
 import Button from "../components/gereral/button";
 import { useState } from "react";
 import { useAlert } from "@blaumaus/react-alert"
+import LoggedRedirect from "../components/loggedRedirect";
 
 export async function getServerSideProps( context : GetServerSidePropsContext ) {
     const queries = context.query
@@ -71,6 +72,8 @@ export default function EditarRefeicao({ mealGroupJSON } : { mealGroupJSON: stri
         
 
     return (
+        <>
+        <LoggedRedirect/>
         <Layout>
             <div>
                 <h1 className={textStyles.h1}>
@@ -103,5 +106,6 @@ export default function EditarRefeicao({ mealGroupJSON } : { mealGroupJSON: stri
                 </div>
             </div>
         </Layout>
+        </>
     )
 }
