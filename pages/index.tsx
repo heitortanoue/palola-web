@@ -12,6 +12,7 @@ import moment from "moment";
 import "moment/locale/pt-br"
 import { getNextMeal } from "../utils/mealsTranslation";
 import Layout from "../components/gereral/layout";
+import LoggedRedirect from "../components/loggedRedirect";
 
 export async function getServerSideProps() {
     const meals = await getDocs(query(collection(database, "meals"), orderBy("date", "desc"), limit(4)))
@@ -78,6 +79,8 @@ export default function Home({ mealsJSON, mealsGroupJSON, weightJSON, machineSta
     moment.locale("pt-br")
 
     return (
+        <>
+        <LoggedRedirect/>
         <Layout disableBackButton={true}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 <section>
@@ -115,5 +118,6 @@ export default function Home({ mealsJSON, mealsGroupJSON, weightJSON, machineSta
                 </div>
             </section>
         </Layout>
+        </>
     );
 }
