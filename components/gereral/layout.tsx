@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebaseConfig";
+import MetaTags from "./metaTags";
 
 export default function Layout ({ children, disableBackButton } : { children: any, disableBackButton ?: boolean }) {
     const [ user, loading ] = useAuthState(auth)
     
     return (
         <>
+        <MetaTags/>
         <div className="bg-background text-black h-screen overflow-y-auto">
             <div className="w-full">
                 <div className="relative overflow-hidden">
