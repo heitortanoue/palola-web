@@ -1,4 +1,3 @@
-import Head from "next/head";
 import Link from "next/link";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebaseConfig";
@@ -8,11 +7,6 @@ export default function Layout ({ children, disableBackButton } : { children: an
     
     return (
         <>
-        <Head>
-            <title>Palola - Alimente seu cão</title>
-            <link rel="icon" href="/icon.png" />
-        </Head>
-
         <div className="bg-background text-black h-screen overflow-y-auto">
             <div className="w-full">
                 <div className="relative overflow-hidden">
