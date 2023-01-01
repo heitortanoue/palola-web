@@ -22,11 +22,89 @@
 
 ## Endpoints para Arduino 🌐
 Todos os endpoints tem o endereço seguindo o seguinte modelo "https://palola.vercel.app/api/<ENDERECO\>". Todos os endpoint precisam que seja incluso na solicitação HTTP um header do tipo *authorization*, com a chave de identificação do Arduino. No momento, ainda não é possível adicionar seu próprio Arduino.
-- ```startmeal``` (*POST*): recebe como parâmetro uma string, com o nome do grupo de refeicao que será criado. Retorna o ID da refeição criada e a marca como *PENDENTE*.  Coloca o status da máquina como *BUSY*;
-- ```finishmeal``` (*POST*): recebe o status e o ID para setar para a refeição. Coloca o status da máquina como *FREE*;
-- ```mealgroups``` (*GET*): mostra todos os grupos de Refeições, bem como seus horários;
-- ```setpalolastatus``` (*POST*): muda o status da máquina;
-- ```getpalolastatus``` (*GET*): retorna o status da máquina;
-- ```setweight``` (*POST*): recebe o peso atual e o muda no banco de dados.
 
 Nesse momento a plataforma ainda é de **uso fechado** e não é possível se cadastrar.
+
+### Criar nova refeição
+```[POST] /startmeal``` 
+- Cria uma nova refeição do tipo que for passado nos atributos. Retorna o ID da refeição criada e coloca seu status como *PENDENTE*. Ao mesmo tempo, coloca o status da máquina como *BUSY* (ocupado).
+  
+> **Atributos**
+> - *mealName**: string, nome do grupo de refeições
+>   - BREAKFAST = "breakfast",
+>   - LUNCH = "lunch",
+>   - DINNER = "dinner",
+>   - MANUAL = "manual"
+
+> **Resposta**
+> - *id*: string, identificador da nova refeição criada
+
+### Finalizar refeição
+```[POST] /finishmeal``` 
+- Finaliza a refeição cujo ID foi passado como atributo. Coloca o status da refeição como o status passado como atributo. Ao mesmo tempo, coloca o status da máquina como *FREE* (livre).
+  
+> **Atributos**
+> - *status**: int, novo status da refeição
+>   - PENDING = 0,
+>   - ACCEPTED = 1,
+>   - REJECTED = 2,
+>   - ALREADY_FULL = 3
+> - *id**: string, identificador da nova refeição a ser modificada
+
+> **Resposta**
+> - *message*: string
+
+### Listar grupos de refeições
+```[GET] /mealsgroups``` 
+- Mostra todos os grupos de Refeições, bem como seus horários.
+  
+> **Atributos**
+> Não há atributos
+
+> **Resposta**
+> - *mealsCount*: int, número de grupos de refeições
+> - *meals*: array, todos os grupos de refeições
+> ```typescript
+>   interface MealGroupObject {
+>       id: string,
+>       name: MealGroup,
+>       date: {
+>           hours: number,
+>           minutes: number
+>       }
+>   }
+> ```
+
+### Mudar o status da máquina
+```[POST] /setpalolastatus``` 
+- Muda o status da máquina.
+  
+> **Atributos**
+> - *status**: int, novo status da máquina
+>   - FREE = 0,
+>   - BUSY = 1,
+
+> **Resposta**
+> - *message*: string
+
+### Recuperar o status da máquina
+```[GET] /getpalolastatus``` 
+- Recupera o status da máquina.
+  
+> **Atributos**
+> Não há atributos
+
+> **Resposta**
+> - *status**: int, status da máquina
+>   - FREE = 0,
+>   - BUSY = 1,
+
+### Mudar o peso atual
+```[POST] /setweight``` 
+- Muda o peso atual do pote de ração.
+  
+> **Atributos**
+> - *current**: float, peso atual a ser mudado
+
+> **Resposta**
+> - *message*: string
