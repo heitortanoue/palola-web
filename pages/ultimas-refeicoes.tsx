@@ -27,7 +27,7 @@ export async function getServerSideProps() {
     })
 }
 
-export default function UltimasRefeicoes ({ mealsJSON }) {
+export default function UltimasRefeicoes ({ mealsJSON } : { mealsJSON: string }) {
     const meals = JSON.parse(mealsJSON) as Meal[]
 
     return (
