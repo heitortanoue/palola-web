@@ -18,19 +18,13 @@ export default function FillBowlCard ({ mealWeight, machineStatus } :
     const alert = useAlert()
 
     const fillFunction = async () => {
-        const newMeal = {
-            group: MealGroup.MANUAL,
-            date: (new Date),
-            status: MealStatus.PENDING
-        } as Meal
-        await addMeal(newMeal).then(() => {
+        await axios.post("/api/startmeal", {
+            mealName: MealGroup.MANUAL
+        }).then(() => {
             alert.success("Requisição enviada com sucesso")
         }).catch(() => {
             alert.error("Erro ao enviar requisição")
         })
-    }
-    async function postFeed () {
-        await axios.post("/api/feed", {})
     }
 
     return (

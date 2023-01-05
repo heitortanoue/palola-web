@@ -14,6 +14,8 @@ import { getNextMeal } from "../utils/mealsTranslation";
 import Layout from "../components/gereral/layout";
 import LoggedRedirect from "../components/loggedRedirect";
 
+import Link from "next/link";
+
 export async function getServerSideProps() {
     const meals = await getDocs(query(collection(database, "meals"), orderBy("date", "desc"), limit(4)))
     const mealsData = meals.docs.map((meal) => {
@@ -104,9 +106,14 @@ export default function Home({ mealsJSON, mealsGroupJSON, weightJSON, machineSta
                 </div>
             </section>
             <section>
-                <h2 className={textStyles.h2 + " mb-3"}>
-                    Últimas refeições
-                </h2>
+                <Link href={"/ultimas-refeicoes"} passHref>
+                    <div className="flex justify-between items-baseline cursor-pointer">
+                        <h2 className={textStyles.h2 + " mb-3"}>
+                            Últimas refeições
+                        </h2>
+                        <i className="fa-solid fa-arrow-right"/>
+                    </div>
+                </Link>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                     {
                         meals.map((meal) => {
