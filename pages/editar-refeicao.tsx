@@ -5,7 +5,7 @@ import Layout from "../components/gereral/layout";
 import { buttonStyles, inputStyles, textStyles } from "../styles/styles";
 import { GetServerSidePropsContext } from "next";
 import { MealGroupObject } from "../utils/types";
-import { mealGroupToString, mealCardByTypeObject } from "../utils/mealsTranslation";
+import { mealGroupToString } from "../utils/mealsTranslation";
 
 import MealIcon from "../components/gereral/mealIcon";
 import WhiteCard from "../components/gereral/whiteCard";
@@ -60,8 +60,8 @@ export default function EditarRefeicao({ mealGroupJSON } : { mealGroupJSON: stri
         const refDoc = doc(database, "groups", mealGroup.id)
         await updateDoc(refDoc, {
             date: {
-                hours: timeState.hours,
-                minutes: timeState.minutes
+                hours: parseInt(timeState.hours),
+                minutes: parseInt(timeState.minutes)
             }
         }).then(() => {
             alert.success("Refeição editada com sucesso!")

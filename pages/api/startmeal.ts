@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDoc, Timestamp, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, doc, getDoc, getDocs, query, Timestamp, updateDoc, where } from 'firebase/firestore'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { database } from '../../utils/firebaseConfig'
 import { machineStatusToObject } from '../../utils/mealsTranslation'
@@ -35,9 +35,18 @@ export default async function startmeal (req: NextApiRequest, res: NextApiRespon
     const col = collection(database, 'meals')
     return await addDoc(col, newMeal).then(async (docRef) => {
         const id = docRef.id
+
+        // atualiza a lastDate do grupo de refeicoes que tem o name == mealName
+        const newQueryGroups = query(
+            collection(database, 'groups'),
+            where('group', '==', mealName)
+            )
+        const snapshot = await getDocs(newQueryGroups)
+        const idGroup = snapshot.docs[0].id
+        await updateDoc(doc(database, 'groups', idGroup), { lastDate: Timestamp.now() })
         
         // coloca o status da maquina como BUSY
-        await updateDoc(doc(database, 'machine', 'machineStatus'), { status: MachineStatus.BUSY })
+        // await updateDoc(doc(database, 'machine', 'machineStatus'), { status: MachineStatus.BUSY })
 
         return res.status(200).json({ id })
     }).catch((err) => {

@@ -38,7 +38,7 @@ export async function getServerSideProps() {
         } as MealGroupObject
     })
 
-    const weightQuery = await getDoc(doc(database, "weight", "weightStatus"))
+    const weightQuery = await getDoc(doc(database, "machine", "weightStatus"))
     const weightData = weightQuery.data()
     // turn firebase timestamp into date
     if (weightData && weightData.lastUpdate) {

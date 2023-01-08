@@ -5,7 +5,7 @@ import { authenticateArduino } from '../../utils/server/authenticateArduino'
 import { MachineStatus, MealStatus } from '../../utils/types'
 
 export default async function finishmeal (req: NextApiRequest, res: NextApiResponse) {
-    const { status, id } : { status: MealStatus, id: string } = req.body
+    const { status, id, weight } : { status: MealStatus, id: string, weight: number } = req.body
 
     if (!authenticateArduino(req)) {
         return res.status(401).json({ message: "Não autorizado" })
@@ -16,9 +16,24 @@ export default async function finishmeal (req: NextApiRequest, res: NextApiRespo
         return res.status(400).json({ message: "Status da refeição inválido" })
     }
 
+    if (status === MealStatus.PENDING) {
+        return res.status(400).json({ message: "Não é possível definir o status da refeição como PENDENTE" })
+    }
+
+    if (!weight || weight < 0) {
+        return res.status(400).json({ message: "Peso inválido" })
+    }
+
+    if (!id) {
+        return res.status(400).json({ message: "ID inválido" })
+    }
+
     const docRef = doc(database, 'meals', id)
 
-    return await updateDoc(docRef, {status}).then(async (docRef) => {       
+    return await updateDoc(docRef, {status}).then(async (docRef) => {  
+        // atualiza o peso atual
+        await updateDoc(doc(database, 'machine', 'weightStatus'), { current: weight })
+        
         // coloca o status da maquina como FREE
         await updateDoc(doc(database, 'machine', 'machineStatus'), { status: MachineStatus.FREE })
 

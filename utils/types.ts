@@ -20,7 +20,7 @@ export enum MealGroup {
 }
 
 export interface Meal {
-    id: string;
+    id?: string;
     group: MealGroup;
     date: Date;
     status: MealStatus;

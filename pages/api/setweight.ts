@@ -10,7 +10,7 @@ export default async function setweight (req: NextApiRequest, res: NextApiRespon
         return res.status(401).json({ message: "Não autorizado" })
     }
 
-    await updateDoc(doc(database, 'weight', "weightStatus"), {
+    await updateDoc(doc(database, 'machine', "weightStatus"), {
         current,
         lastUpdate: Timestamp.now()
     })
