@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { database } from '../../utils/firebaseConfig'
 import { machineStatusToObject } from '../../utils/mealsTranslation'
 import { authenticateArduino } from '../../utils/server/authenticateArduino'
-import { MachineStatus, MealGroup, MealStatus } from '../../utils/types'
+import { MachineStatus, MealGroup, MealStatus, RESPONSE_STATUS } from '../../utils/types'
 
 export default async function startmeal(req: NextApiRequest, res: NextApiResponse) {
     const { mealName }: { mealName: string } = req.body
@@ -43,8 +43,8 @@ export default async function startmeal(req: NextApiRequest, res: NextApiRespons
         // coloca o status da maquina como BUSY
         // await updateDoc(doc(database, 'machine', 'machineStatus'), { status: MachineStatus.BUSY })
 
-        return res.status(200).json({ id })
+        return res.status(200).json({ status: RESPONSE_STATUS.SUCESS, id })
     }).catch((err) => {
-        return res.status(400).json({ message: err.message })
+        return res.status(400).json({ status: RESPONSE_STATUS.ERROR, message: err.message })
     })
 }

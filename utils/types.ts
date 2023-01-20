@@ -42,3 +42,9 @@ export interface mealWeight {
     tare: number,
     lastUpdate: Date
 }
+
+export enum RESPONSE_STATUS {
+    NO_MEALS = "no-meals",
+    SUCESS = "sucess",
+    ERROR = "error"
+}

@@ -2,7 +2,7 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { database } from '../../utils/firebaseConfig'
 import { authenticateArduino } from '../../utils/server/authenticateArduino'
-import { MachineStatus, MealStatus } from '../../utils/types'
+import { MachineStatus, MealStatus, RESPONSE_STATUS } from '../../utils/types'
 
 export default async function finishmeal (req: NextApiRequest, res: NextApiResponse) {
     const { status, id, weight } : { status: MealStatus, id: string, weight: number } = req.body
@@ -47,8 +47,8 @@ export default async function finishmeal (req: NextApiRequest, res: NextApiRespo
         // coloca o status da maquina como FREE
         await updateDoc(doc(database, 'machine', 'machineStatus'), { status: MachineStatus.FREE })
 
-        return res.status(200).json({ message: "Refeição finalizada com sucesso" })
+        return res.status(200).json({ status: RESPONSE_STATUS.SUCESS, message: "Refeição finalizada com sucesso" })
     }).catch((err) => {
-        return res.status(400).json({ message: err })
+        return res.status(400).json({ status: RESPONSE_STATUS.ERROR, message: err })
     })
 }

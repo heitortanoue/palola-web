@@ -3,13 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { database } from '../../utils/firebaseConfig'
 import { authenticateArduino } from '../../utils/server/authenticateArduino'
 import createMealGroupsPending from '../../utils/server/createMealGroupsPending'
-import { MealStatus } from '../../utils/types'
-
-enum STATUS {
-    NO_MEALS = "no-meals",
-    SUCESS = "sucess",
-    ERROR = "error"
-}
+import { MealStatus, RESPONSE_STATUS } from '../../utils/types'
 
 export default async function pendingmeals (req: NextApiRequest, res: NextApiResponse) {
     if (!authenticateArduino(req)) {
@@ -31,7 +25,7 @@ export default async function pendingmeals (req: NextApiRequest, res: NextApiRes
 
         if (createdMeal) {
             return res.status(200).json({ 
-                status: STATUS.SUCESS,
+                status: RESPONSE_STATUS.SUCESS,
                 group: createdGroup,
                 id: createdId,
             })
@@ -39,7 +33,7 @@ export default async function pendingmeals (req: NextApiRequest, res: NextApiRes
 
         // if no meals are pending
         if (snapshot.empty) {
-            return res.status(200).json({ status: STATUS.NO_MEALS })
+            return res.status(200).json({ status: RESPONSE_STATUS.NO_MEALS })
         }
 
         const result = snapshot.docs[0]
@@ -51,13 +45,13 @@ export default async function pendingmeals (req: NextApiRequest, res: NextApiRes
         })
 
         return res.status(200).json({ 
-            status: STATUS.SUCESS,
+            status: RESPONSE_STATUS.SUCESS,
             group: result.data().group,
             id: result.id,
         })
     })
     .catch((err) => {
         console.log(err)
-        res.status(400).json({ status: STATUS.ERROR, message: err })
+        res.status(400).json({ status: RESPONSE_STATUS.ERROR, message: err })
     })
 }

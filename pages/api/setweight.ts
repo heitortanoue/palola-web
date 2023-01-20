@@ -2,6 +2,7 @@ import { doc, Timestamp, updateDoc } from 'firebase/firestore'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { database } from '../../utils/firebaseConfig'
 import { authenticateArduino } from '../../utils/server/authenticateArduino'
+import { RESPONSE_STATUS } from '../../utils/types'
 
 export default async function setweight (req: NextApiRequest, res: NextApiResponse) {
     const { current } = req.body
@@ -15,8 +16,8 @@ export default async function setweight (req: NextApiRequest, res: NextApiRespon
         lastUpdate: Timestamp.now()
     })
     .then(() => {
-        res.status(200).json({ message: "Peso atual alterado com sucesso" })
+        res.status(200).json({ status: RESPONSE_STATUS.SUCESS,  message: "Peso atual alterado com sucesso" })
     }).catch((err) => {
-        res.status(400).json({ message: err })
+        res.status(400).json({ status: RESPONSE_STATUS.ERROR, message: err })
     })
 }
