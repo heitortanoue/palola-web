@@ -12,13 +12,13 @@ enum STATUS {
 }
 
 export default async function pendingmeals (req: NextApiRequest, res: NextApiResponse) {
-    // if (!authenticateArduino(req)) {
-    //     return res.status(401).json({ message: "Não autorizado" })
-    // }
+    if (!authenticateArduino(req)) {
+        return res.status(401).json({ message: "Não autorizado" })
+    }
 
     // get all docs with status MealStatus.Pending
     const col = collection(database, 'meals')
-    const q = query(col, where('status', '==', MealStatus.PENDING), orderBy("date", "asc"))
+    const q = query(col, where('status', '==', MealStatus.PENDING), orderBy("date", "desc"))
 
     return await getDocs(q)
     .then(async (snapshot) => {
@@ -27,10 +27,18 @@ export default async function pendingmeals (req: NextApiRequest, res: NextApiRes
         // 2. past meals
 
         // get the last date from the meal groups, passing the full url
-        const hasCreatedNewMeal = await createMealGroupsPending(req);
+        const { createdMeal, id : createdId, group : createdGroup } = await createMealGroupsPending(req);
+
+        if (createdMeal) {
+            return res.status(200).json({ 
+                status: STATUS.SUCESS,
+                group: createdGroup,
+                id: createdId,
+            })
+        }
 
         // if no meals are pending
-        if (snapshot.empty && !hasCreatedNewMeal) {
+        if (snapshot.empty) {
             return res.status(200).json({ status: STATUS.NO_MEALS })
         }
 

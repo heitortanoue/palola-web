@@ -2,6 +2,7 @@ import { database } from "../utils/firebaseConfig"
 import { MachineStatus, Meal, MealGroupObject, mealWeight } from "../utils/types";
 import { collection, getDocs, query, orderBy, limit, getDoc, doc } from "firebase/firestore";
 import { textStyles } from "../styles/styles"
+import { timestampToDate } from "../utils/firebaseFunctions";
 
 import NextMealCard from "../components/nextMealCard";
 import MealGroupCard from "../components/mealGroupCard";
@@ -42,7 +43,7 @@ export async function getServerSideProps() {
     const weightData = weightQuery.data()
     // turn firebase timestamp into date
     if (weightData && weightData.lastUpdate) {
-        weightData.lastUpdate = new Date(weightData.lastUpdate.seconds * 1000)
+        weightData.lastUpdate = timestampToDate(weightData.lastUpdate)
     }
 
     const machineStatus = await getDoc(doc(database, "machine", "machineStatus"))

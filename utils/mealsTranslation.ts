@@ -1,4 +1,5 @@
 import moment from "moment";
+import { timestampToDate } from "./firebaseFunctions";
 import { MealStatus, MealGroup, Meal, MealGroupObject, MachineStatus } from "./types";
 const COLORS = require("./colors");
 
@@ -108,22 +109,26 @@ export function mealGroupToString(group: MealGroup): string {
     }
 }
 
+// mealGroups have to be on ascending order
 export function getNextMeal ( mealsGroups : MealGroupObject[] ) : MealGroupObject {
-  // Get the current time
-  const currentTime = moment();
-  let nextMeal: MealGroupObject | undefined;
+    // Get the current time
+    const currentTime = moment();
+    let nextMeal: MealGroupObject | undefined;
 
-  // Iterate through the mealsGroups array
-  for (const meal of mealsGroups) {
-    // Check if the meal's time has passed the current time
-    const mealTime = moment().hour(meal.date.hours).minute(meal.date.minutes);
-    if (mealTime.isAfter(currentTime)) {
-      // If the meal's time is after the current time, set it as the next meal
-      nextMeal = meal;
-      break;
+    // Iterate through the mealsGroups array
+    for (const meal of mealsGroups) {
+        // Check if the meal's time has passed the current time
+        const mealTime = moment().hour(meal.date.hours).minute(meal.date.minutes);
+        if (
+            mealTime.isAfter(currentTime) &&
+            !mealTime.isSame(moment(timestampToDate(meal.lastDate)), "day")
+        ) {
+            // If the meal's time is after the current time, set it as the next meal
+            nextMeal = meal;
+            break;
+        }
     }
-  }
 
-  // If a next meal was found, return it. Otherwise, return the first meal in the array.
-  return nextMeal || mealsGroups[0];
+    // If a next meal was found, return it. Otherwise, return the first meal in the array.
+    return nextMeal || mealsGroups[0];
 }

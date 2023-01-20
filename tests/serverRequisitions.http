@@ -1,0 +1,28 @@
+POST http://localhost:3000/api/startmeal
+Content-Type: application/json
+Authorization: {{$dotenv ARDUINO_AUTH_KEY}}
+{
+    "mealName": "lunch"
+}
+
+### ====================
+
+GET http://localhost:3000/api/pendingmeals
+Authorization: {{$dotenv ARDUINO_AUTH_KEY}}
+
+### ====================
+
+GET http://localhost:3000/api/mealgroups
+Authorization: {{$dotenv ARDUINO_AUTH_KEY}}
+
+### ====================
+
+POST http://localhost:3000/api/finishmeal
+Content-Type: application/json
+Authorization: {{$dotenv ARDUINO_AUTH_KEY}}
+
+{
+    "status": 1,
+    "id": "QoJWRdO8Q01mKMlMYxfM",
+    "weight": 0.230
+}

@@ -33,6 +33,7 @@ export interface MealGroupObject {
         hours: number,
         minutes: number
     }
+    lastDate: Timestamp,
 }
 
 export interface mealWeight {

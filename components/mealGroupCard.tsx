@@ -1,11 +1,10 @@
 import { MealGroupObject } from "../utils/types";
 import moment from "moment";
 import 'moment/locale/pt-br'
-import { mealGroupToString, mealCardByTypeObject, mealStatusToString } from "../utils/mealsTranslation";
-import WhiteCard from "./gereral/whiteCard";
+import { mealGroupToString, mealCardByTypeObject } from "../utils/mealsTranslation";
 import WhiteCardTopBorder from "./gereral/whiteCardTopBorder";
-import { addOpacityHex } from "../utils/colorFunctions";
 import Link from "next/link";
+import { timestampToDate } from "../utils/firebaseFunctions";
 
 export default function MealGroupCard ({ mealGroup } : { mealGroup: MealGroupObject }) {
     moment.locale("pt-br")
@@ -13,7 +12,10 @@ export default function MealGroupCard ({ mealGroup } : { mealGroup: MealGroupObj
     const timeString = mealGroup.date.hours + "h" + mealGroup.date.minutes
     let day = "Hoje"
     const nextTime = moment().set({ hour: mealGroup.date.hours, minute: mealGroup.date.minutes })
-    if (nextTime.isBefore(moment())) {
+    if (
+        nextTime.isBefore(moment()) ||
+        nextTime.isSame(moment(timestampToDate(mealGroup.lastDate)), 'day')
+    ) {
         nextTime.add(1, "day")
         day = "Amanhã"
     }

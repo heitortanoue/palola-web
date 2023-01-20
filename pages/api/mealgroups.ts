@@ -8,7 +8,7 @@ import { MealStatus } from '../../utils/types'
 
 export default async function mealgroups (req: NextApiRequest, res: NextApiResponse) {
     const col = collection(database, 'groups')
-    const myQuery = query(col)
+    const myQuery = query(col, orderBy("date.hours", "asc"))
     const snapshot = await getDocs(myQuery)
 
 
@@ -20,5 +20,13 @@ export default async function mealgroups (req: NextApiRequest, res: NextApiRespo
         return res.status(200).json({ mealsCount: 0 })
     }
 
-    res.status(200).json({ mealsCount: snapshot.docs.length, meals: snapshot.docs.map(doc => doc.data()) })
+    // get meals id and data
+    const meals = snapshot.docs.map((doc) => {
+        return {
+            id: doc.id,
+            ...doc.data()
+        }
+    })
+
+    res.status(200).json({ mealsCount: snapshot.docs.length, meals })
 }

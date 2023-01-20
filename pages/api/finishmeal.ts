@@ -1,4 +1,4 @@
-import { doc, updateDoc } from 'firebase/firestore'
+import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { database } from '../../utils/firebaseConfig'
 import { authenticateArduino } from '../../utils/server/authenticateArduino'
@@ -29,6 +29,16 @@ export default async function finishmeal (req: NextApiRequest, res: NextApiRespo
     }
 
     const docRef = doc(database, 'meals', id)
+
+    // check if meal exists and is pending
+    const meal = await getDoc(docRef)
+    if (!meal.exists()) {
+        return res.status(400).json({ message: "Refeição não encontrada" })
+    }
+
+    if (meal.data().status !== MealStatus.PENDING) {
+        return res.status(400).json({ message: "Refeição não está pendente" })
+    }
 
     return await updateDoc(docRef, {status}).then(async (docRef) => {  
         // atualiza o peso atual

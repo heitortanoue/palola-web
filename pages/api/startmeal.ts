@@ -5,8 +5,8 @@ import { machineStatusToObject } from '../../utils/mealsTranslation'
 import { authenticateArduino } from '../../utils/server/authenticateArduino'
 import { MachineStatus, MealGroup, MealStatus } from '../../utils/types'
 
-export default async function startmeal (req: NextApiRequest, res: NextApiResponse) {
-    const { mealName } : { mealName: string } = req.body
+export default async function startmeal(req: NextApiRequest, res: NextApiResponse) {
+    const { mealName }: { mealName: string } = req.body
 
     if (!authenticateArduino(req)) {
         return res.status(401).json({ message: "Não autorizado" })
@@ -21,8 +21,8 @@ export default async function startmeal (req: NextApiRequest, res: NextApiRespon
     const snapshot = await getDoc(doc(database, 'machine', 'machineStatus'))
     const machineStatus = snapshot.data() as any
     if (machineStatus.status !== MachineStatus.FREE) {
-        return res.status(400).json(
-            { message: `Máquina não-disponível (${ machineStatusToObject(machineStatus.status).text })`
+        return res.status(400).json({
+            message: `Máquina não-disponível (${machineStatusToObject(machineStatus.status).text})`
         })
     }
 
@@ -37,19 +37,14 @@ export default async function startmeal (req: NextApiRequest, res: NextApiRespon
         const id = docRef.id
 
         // atualiza a lastDate do grupo de refeicoes que tem o name == mealName
-        const newQueryGroups = query(
-            collection(database, 'groups'),
-            where('group', '==', mealName)
-            )
-        const snapshot = await getDocs(newQueryGroups)
-        const idGroup = snapshot.docs[0].id
-        await updateDoc(doc(database, 'groups', idGroup), { lastDate: Timestamp.now() })
-        
+        const newDocGroup = doc(database, 'groups', mealName)
+        await updateDoc(newDocGroup, { lastDate: Timestamp.now() })
+
         // coloca o status da maquina como BUSY
         // await updateDoc(doc(database, 'machine', 'machineStatus'), { status: MachineStatus.BUSY })
 
         return res.status(200).json({ id })
     }).catch((err) => {
-        return res.status(400).json({ message: err })
+        return res.status(400).json({ message: err.message })
     })
 }
