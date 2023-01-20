@@ -1,11 +1,11 @@
 import axios from "axios";
 import { doc, Timestamp, updateDoc } from "firebase/firestore";
-import moment from "moment";
 import { NextApiRequest } from "next";
 import { database } from "../firebaseConfig";
-import { checkMealInterval, dateToTimestamp, timestampToDate } from "../firebaseFunctions";
+import { checkMealInterval } from "../firebaseFunctions";
 import { getNextMeal } from "../mealsTranslation";
 import { MealGroupObject } from "../types";
+import absoluteUrl from "next-absolute-url";
 
 interface ReturnType {
     createdMeal: boolean;
@@ -13,13 +13,8 @@ interface ReturnType {
     group?: string;
 }
 
-export default async function createMealGroupsPending(req : NextApiRequest) {
-    const proto =
-    req.headers["x-forwarded-proto"] || req.connection.encrypted
-      ? "https"
-      : "http";
-
-    const URL = proto + "://" + req.headers.host + "/api/"
+export default async function createMealGroupsPending(req : NextApiRequest) : Promise<ReturnType> {
+    const URL = `${absoluteUrl(req).origin}/api/`
 
     const mealGroupsResult = await axios.get(URL + "mealgroups", {
         headers: {
