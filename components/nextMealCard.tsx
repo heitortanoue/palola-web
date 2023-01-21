@@ -16,7 +16,7 @@ export default function NextMealCard ({ meal } : { meal: MealGroupObject }) {
 
     return (
         <WhiteCardTopBorder bgColor={addOpacityHex(color, 0.2)} color={color}
-        className="flex gap-4 justify-center items-center !h-full">
+        className="flex gap-4 justify-center items-center">
             <div className={`h-10 w-10 rounded-md flex shadow-sm`} style={{ backgroundColor: color }}>
                 <i className={`fa-solid fa-${icon} text-white text-2xl m-auto`}/>
             </div>

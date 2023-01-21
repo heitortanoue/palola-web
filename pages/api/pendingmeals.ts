@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { database } from '../../utils/firebaseConfig'
 import { authenticateArduino } from '../../utils/server/authenticateArduino'
 import createMealGroupsPending from '../../utils/server/createMealGroupsPending'
-import { MealStatus, RESPONSE_STATUS } from '../../utils/types'
+import { MachineStatus, MealStatus, RESPONSE_STATUS } from '../../utils/types'
 
 export default async function pendingmeals (req: NextApiRequest, res: NextApiResponse) {
     if (!authenticateArduino(req)) {
@@ -43,6 +43,9 @@ export default async function pendingmeals (req: NextApiRequest, res: NextApiRes
                 await updateDoc(doc.ref, { status: MealStatus.REJECTED })
             }
         })
+
+        // update machine status to BUSY
+        await updateDoc(doc(database, 'machine', 'machineStatus'), { status: MachineStatus.BUSY })
 
         return res.status(200).json({ 
             status: RESPONSE_STATUS.SUCESS,

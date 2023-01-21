@@ -1,27 +1,32 @@
 import moment from "moment"
-import { MachineStatus, Meal, MealGroup, MealStatus, mealWeight } from "../utils/types"
+import { MachineStatus, MachineStatusObject, Meal, MealGroup, MealStatus, mealWeight } from "../utils/types"
 import WhiteCard from "./gereral/whiteCard"
 import Image from "next/image"
 import { buttonStyles } from "../styles/styles"
 import Button from "./gereral/button"
-import { addMeal } from "../utils/firebaseFunctions"
+
 import { useAlert } from "@blaumaus/react-alert"
+import { useRouter } from "next/router"
+
 import axios from "axios"
 import { machineStatusToObject } from "../utils/mealsTranslation"
 
 export default function FillBowlCard ({ mealWeight, machineStatus } :
-    { mealWeight: mealWeight, machineStatus: MachineStatus }) {
+    { mealWeight: mealWeight, machineStatus: MachineStatusObject }) {
         
     const weightPercentage = Math.round((mealWeight.current - mealWeight.tare)/mealWeight.max * 100)
-    const weightDate = moment(mealWeight.lastUpdate)
-    const { icon, color, bgColor, text } = machineStatusToObject(machineStatus)
+    const weightDate = moment(machineStatus.lastUpdate)
+    const { icon, color, bgColor, text } = machineStatusToObject(machineStatus.status)
+
     const alert = useAlert()
+    const router = useRouter()
 
     const fillFunction = async () => {
         await axios.post("/api/startmeal", {
             mealName: MealGroup.MANUAL
         }).then(() => {
             alert.success("Requisição enviada com sucesso")
+            router.reload()
         }).catch((err) => {
             alert.error(`Erro ao enviar requisição. ${err.response.data?.message}`)
         })

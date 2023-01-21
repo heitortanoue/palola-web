@@ -1,6 +1,6 @@
 import { database } from "../utils/firebaseConfig"
-import { MachineStatus, Meal, MealGroupObject, mealWeight } from "../utils/types";
-import { collection, getDocs, query, orderBy, limit, getDoc, doc } from "firebase/firestore";
+import { MachineStatus, MachineStatusObject, Meal, MealGroupObject, mealWeight } from "../utils/types";
+import { collection, getDocs, query, orderBy, limit, getDoc, doc, Timestamp } from "firebase/firestore";
 import { textStyles } from "../styles/styles"
 import { timestampToDate } from "../utils/firebaseFunctions";
 
@@ -16,6 +16,7 @@ import Layout from "../components/gereral/layout";
 import LoggedRedirect from "../components/loggedRedirect";
 
 import Link from "next/link";
+import WhiteCard from "../components/gereral/whiteCard";
 
 export async function getServerSideProps() {
     const meals = await getDocs(query(collection(database, "meals"), orderBy("date", "desc"), limit(4)))
@@ -41,16 +42,10 @@ export async function getServerSideProps() {
 
     const weightQuery = await getDoc(doc(database, "machine", "weightStatus"))
     const weightData = weightQuery.data()
-    // turn firebase timestamp into date
-    if (weightData && weightData.lastUpdate) {
-        weightData.lastUpdate = timestampToDate(weightData.lastUpdate)
-    }
 
     const machineStatus = await getDoc(doc(database, "machine", "machineStatus"))
-    let machineStatusData : MachineStatus = 0
-    if (machineStatus.exists()) {
-        machineStatusData = machineStatus.data().status
-    }
+    const machineStatusData = machineStatus.data() as any
+    machineStatusData.lastUpdate = timestampToDate(machineStatusData.lastUpdate)
 
     return ({
         props: {
@@ -77,7 +72,7 @@ export default function Home({ mealsJSON, mealsGroupJSON, weightJSON, machineSta
     const meals = JSON.parse(mealsJSON) as Meal[]
     const mealsGroup = JSON.parse(mealsGroupJSON) as MealGroupObject[]
     const weight = JSON.parse(weightJSON) as mealWeight
-    const machineStatus = JSON.parse(machineStatusJSON) as MachineStatus
+    const machineStatus = JSON.parse(machineStatusJSON) as MachineStatusObject
 
     moment.locale("pt-br")
 
@@ -85,17 +80,15 @@ export default function Home({ mealsJSON, mealsGroupJSON, weightJSON, machineSta
         <>
         <LoggedRedirect/>
         <Layout disableBackButton={true}>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                <section>
-                    <FillBowlCard mealWeight={weight} machineStatus={machineStatus}/>
-                </section>
-                <section>
-                    <h2 className={textStyles.h2 + " mb-3"}>
-                        Próxima refeição
-                    </h2>
-                    <NextMealCard meal={getNextMeal(mealsGroup)}/>
-                </section>
-            </div>
+            <section>
+                <FillBowlCard mealWeight={weight} machineStatus={machineStatus}/>
+            </section>
+            <section>
+                <h2 className={textStyles.h2 + " mb-3"}>
+                    Próxima refeição
+                </h2>
+                <NextMealCard meal={getNextMeal(mealsGroup)}/>
+            </section>
             <section>
                 <h2 className={textStyles.h2 + " mb-3"}>
                     Grupos de refeições
@@ -115,15 +108,22 @@ export default function Home({ mealsJSON, mealsGroupJSON, weightJSON, machineSta
                         <i className="fa-solid fa-arrow-right"/>
                     </div>
                 </Link>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                    {
-                        meals.map((meal) => {
-                            return (
-                                <LastMealsCard meal={meal} key={meal.id}/>
-                            )
-                        })
-                    }
-                </div>
+                {
+                    meals.length ?
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                                {meals.map((meal) => {
+                                    return (
+                                        <LastMealsCard meal={meal} key={meal.id}/>
+                                    )
+                                })}
+                        </div>
+                    :
+                        <WhiteCard className="w-full">
+                            <h3 className={"italic text-sm"}>
+                                Nenhuma refeição registrada :(
+                            </h3>
+                        </WhiteCard>
+                }
             </section>
         </Layout>
         </>

@@ -13,9 +13,12 @@ export default async function setweight (req: NextApiRequest, res: NextApiRespon
 
     await updateDoc(doc(database, 'machine', "weightStatus"), {
         current,
-        lastUpdate: Timestamp.now()
     })
-    .then(() => {
+    .then(async () => {
+        await updateDoc(doc(database, 'machine', "machineStatus"), {
+            lastUpdate: Timestamp.now()
+        })
+
         res.status(200).json({ status: RESPONSE_STATUS.SUCESS,  message: "Peso atual alterado com sucesso" })
     }).catch((err) => {
         res.status(400).json({ status: RESPONSE_STATUS.ERROR, message: err })

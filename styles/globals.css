@@ -9,3 +9,11 @@
 
     --primary-dark: 239 126 99;
 }
+
+#toggle:checked ~ .dot {
+    transform: translateX(150%);
+}
+
+#toggle:checked ~ .toggleBg {
+    background-color: rgb(var(--primary-dark));
+}

@@ -121,7 +121,8 @@ export function getNextMeal ( mealsGroups : MealGroupObject[] ) : MealGroupObjec
         const mealTime = moment().hour(meal.date.hours).minute(meal.date.minutes);
         if (
             mealTime.isAfter(currentTime) &&
-            !mealTime.isSame(moment(timestampToDate(meal.lastDate)), "day")
+            !mealTime.isSame(moment(timestampToDate(meal.lastDate)), "day") &&
+            !meal.disabled
         ) {
             // If the meal's time is after the current time, set it as the next meal
             nextMeal = meal;

@@ -34,13 +34,18 @@ export interface MealGroupObject {
         minutes: number
     }
     lastDate: Timestamp,
+    disabled: boolean,
+}
+
+export interface MachineStatusObject {
+    lastUpdate: Date,
+    status: MachineStatus,
 }
 
 export interface mealWeight {
     max: number,
     current: number,
     tare: number,
-    lastUpdate: Date
 }
 
 export enum RESPONSE_STATUS {
