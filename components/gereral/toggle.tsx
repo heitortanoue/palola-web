@@ -1,4 +1,4 @@
-export default function Toggle ({ toggleState }) {
+export default function Toggle ({ toggleState }: { toggleState: [boolean, (value: boolean) => void] }) {
     return (
         <label htmlFor="toggle" className="flex items-center cursor-pointer relative">
             <input type="checkbox" id="toggle" className="sr-only" defaultChecked={!toggleState[0]}
