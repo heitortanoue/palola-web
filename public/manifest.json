@@ -1,6 +1,6 @@
 {
     "background_color": "white",
-    "theme_color": "lightcoral",
+    "theme_color": "#f6b5a6",
     "description": "Controle o seu Palola e veja o que está acontecendo com seu PET em tempo real.",
     "display": "fullscreen",
     "orientation": "portrait",
