@@ -22,8 +22,8 @@ export default function FillBowlCard ({ mealWeight, machineStatus } :
             mealName: MealGroup.MANUAL
         }).then(() => {
             alert.success("Requisição enviada com sucesso")
-        }).catch(() => {
-            alert.error("Erro ao enviar requisição")
+        }).catch((err) => {
+            alert.error(`Erro ao enviar requisição. ${err.response.data?.message}`)
         })
     }
 

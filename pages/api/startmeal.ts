@@ -37,11 +37,13 @@ export default async function startmeal(req: NextApiRequest, res: NextApiRespons
         const id = docRef.id
 
         // atualiza a lastDate do grupo de refeicoes que tem o name == mealName
-        const newDocGroup = doc(database, 'groups', mealName)
-        await updateDoc(newDocGroup, { lastDate: Timestamp.now() })
+        if (mealName !== MealGroup.MANUAL) {
+            const newDocGroup = doc(database, 'groups', mealName)
+            await updateDoc(newDocGroup, { lastDate: Timestamp.now() })
+        }
 
         // coloca o status da maquina como BUSY
-        // await updateDoc(doc(database, 'machine', 'machineStatus'), { status: MachineStatus.BUSY })
+        await updateDoc(doc(database, 'machine', 'machineStatus'), { status: MachineStatus.BUSY })
 
         return res.status(200).json({ status: RESPONSE_STATUS.SUCESS, id })
     }).catch((err) => {
