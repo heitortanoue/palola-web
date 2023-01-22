@@ -33,6 +33,7 @@ export interface MealGroupObject {
         hours: number,
         minutes: number
     }
+    foodQuantity: number,
     lastDate: Timestamp,
     disabled: boolean,
 }

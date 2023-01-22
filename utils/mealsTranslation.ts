@@ -131,5 +131,6 @@ export function getNextMeal ( mealsGroups : MealGroupObject[] ) : MealGroupObjec
     }
 
     // If a next meal was found, return it. Otherwise, return the first meal in the array.
+    console.log(nextMeal || mealsGroups[0])
     return nextMeal || mealsGroups[0];
 }

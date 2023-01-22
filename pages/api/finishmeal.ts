@@ -1,4 +1,4 @@
-import { doc, getDoc, updateDoc } from 'firebase/firestore'
+import { doc, getDoc, Timestamp, updateDoc } from 'firebase/firestore'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { database } from '../../utils/firebaseConfig'
 import { authenticateArduino } from '../../utils/server/authenticateArduino'
@@ -45,7 +45,10 @@ export default async function finishmeal (req: NextApiRequest, res: NextApiRespo
         await updateDoc(doc(database, 'machine', 'weightStatus'), { current: weight })
         
         // coloca o status da maquina como FREE
-        await updateDoc(doc(database, 'machine', 'machineStatus'), { status: MachineStatus.FREE })
+        await updateDoc(doc(database, 'machine', 'machineStatus'), { 
+            status: MachineStatus.FREE,
+            lastUpdate: Timestamp.now(),
+        })
 
         return res.status(200).json({ status: RESPONSE_STATUS.SUCESS, message: "Refeição finalizada com sucesso" })
     }).catch((err) => {
