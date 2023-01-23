@@ -10,15 +10,9 @@ import { DEFAULT_FOOD_QUANTITY } from "../settings";
 
 interface ReturnType {
     createdMeal: boolean;
-<<<<<<< HEAD
-    id: string;
-    group: string;
-    foodQuantity: number;
-=======
     id?: string;
     group?: string;
     foodQuantity?: number;
->>>>>>> e1f675f1aca32177fbc4f9f20ee76bf390368b4b
 }
 
 export default async function createMealGroupsPending(req : NextApiRequest) : Promise<ReturnType | { createdMeal: boolean}> {
