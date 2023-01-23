@@ -24,6 +24,7 @@ export interface Meal {
     group: MealGroup;
     date: Date;
     status: MealStatus;
+    foodQuantity: number;
 }
 
 export interface MealGroupObject {

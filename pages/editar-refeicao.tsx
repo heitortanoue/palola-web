@@ -5,7 +5,7 @@ import Layout from "../components/gereral/layout";
 import { buttonStyles, inputStyles, textStyles } from "../styles/styles";
 import { GetServerSidePropsContext } from "next";
 import { MealGroupObject } from "../utils/types";
-import { mealGroupToString } from "../utils/mealsTranslation";
+import { portionToLabel, mealGroupToString, portionOptions } from "../utils/mealsTranslation";
 
 import MealIcon from "../components/gereral/mealIcon";
 import WhiteCard from "../components/gereral/whiteCard";
@@ -41,8 +41,10 @@ export default function EditarRefeicao({ mealGroupJSON } : { mealGroupJSON: stri
         hours: mealGroup.date.hours,
         minutes: mealGroup.date.minutes
     }) as any
-    const [disabled, setDisabled] = useState(mealGroup.disabled)
     const hourString = moment().set({ hour: timeState.hours, minute: timeState.minutes }).format("HH:mm")
+
+    const [disabled, setDisabled] = useState(mealGroup.disabled)
+    const [portion, setPortion] = useState(mealGroup.foodQuantity)
 
     const alert = useAlert()
     const router = useRouter()
@@ -67,7 +69,8 @@ export default function EditarRefeicao({ mealGroupJSON } : { mealGroupJSON: stri
                 hours: parseInt(timeState.hours),
                 minutes: parseInt(timeState.minutes)
             },
-            disabled
+            disabled,
+            foodQuantity: portion
         }).then(() => {
             alert.success("Refeição editada com sucesso!")
             router.push("/")
@@ -105,14 +108,35 @@ export default function EditarRefeicao({ mealGroupJSON } : { mealGroupJSON: stri
                             className={inputStyles.time} onChange={changeFunction}/>
                         </div>
 
-                        <h2 className={textStyles.h2 + " mt-6 mb-2"}>
+                        <h2 className={textStyles.h2 + " mt-6 mb-3"}>
                             Outras configurações
                         </h2>
-                        <div className="flex items-center justify-between">
-                            <div className="text-gray">
-                                Refeição {disabled ? "desativada" : "ativada"}
+                        <div className="flex flex-col gap-3">
+                            <div className="flex items-center justify-between">
+                                <div className="text-gray">
+                                    Refeição {disabled ? "desativada" : "ativada"}
+                                </div>
+                                <Toggle toggleState={[disabled, setDisabled]}/>
                             </div>
-                            <Toggle toggleState={[disabled, setDisabled]}/>
+                            <div className="flex items-center justify-between">
+                                <div className="text-gray">
+                                    Tamanho da porção
+                                </div>
+                                <select name="portion" id="portion"
+                                    className={inputStyles.select + " text-sm"}
+                                    defaultValue={portionToLabel(portion)}
+                                    onChange={(e) => setPortion(Number(e.target.value))}
+                                >
+                                    {portionOptions.map((option, ind) => {
+                                        const { value, label } = option
+                                        return (
+                                            <option value={value} key={ind}>
+                                                {label}
+                                            </option>
+                                        )
+                                    })}
+                                </select>
+                            </div>
                         </div>
                     </div>
 

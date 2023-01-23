@@ -3,11 +3,12 @@ export const textStyles = {
     h2: "font-bold text-xl ",
 }
 
-const input = `rounded-md h-10 bg-white rounded-md px-5 py-2
+const input = `rounded-md h-10 bg-white rounded-md px-3 py-2
 placeholder:text-gray outline-none border border-gray-light`
 export const inputStyles = {
-    time: "w-full " + input,
-    text: input,
+    time: "w-full px-3" + input,
+    text: input + " px-6",
+    select: input + " text-sm w-min px-3",
 }
 
 export const buttonStyles = {

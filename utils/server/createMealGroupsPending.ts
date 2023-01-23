@@ -6,14 +6,16 @@ import { checkMealInterval } from "../firebaseFunctions";
 import { getNextMeal } from "../mealsTranslation";
 import { MealGroupObject } from "../types";
 import absoluteUrl from "next-absolute-url";
+import { DEFAULT_FOOD_QUANTITY } from "../settings";
 
 interface ReturnType {
     createdMeal: boolean;
-    id?: string;
-    group?: string;
+    id: string;
+    group: string;
+    foodQuantity: number;
 }
 
-export default async function createMealGroupsPending(req : NextApiRequest) : Promise<ReturnType> {
+export default async function createMealGroupsPending(req : NextApiRequest) : Promise<ReturnType | { createdMeal: boolean}> {
     const URL = `${absoluteUrl(req).origin}/api/`
 
     const mealGroupsResult = await axios.get(URL + "mealgroups", {
@@ -35,6 +37,7 @@ export default async function createMealGroupsPending(req : NextApiRequest) : Pr
     if (checkMealInterval(currentMealGroup)) {
         const creationResult = await axios.post(URL + "startmeal", {
             mealName: currentMealGroup.name,
+            foodQuantity: currentMealGroup.foodQuantity || DEFAULT_FOOD_QUANTITY,
         }, {
             headers: {
                 "Authorization": process.env.ARDUINO_AUTH_KEY
@@ -54,6 +57,7 @@ export default async function createMealGroupsPending(req : NextApiRequest) : Pr
             createdMeal: true,
             id: creationResult,
             group: currentMealGroup.name,
+            foodQuantity: currentMealGroup.foodQuantity || DEFAULT_FOOD_QUANTITY,
         }
     }
     

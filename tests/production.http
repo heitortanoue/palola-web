@@ -1,4 +1,4 @@
-POST http://localhost:3000/api/startmeal
+POST https://www.palola.vercel.app/api/startmeal
 Content-Type: application/json
 Authorization: {{$dotenv ARDUINO_AUTH_KEY}}
 {
@@ -7,17 +7,17 @@ Authorization: {{$dotenv ARDUINO_AUTH_KEY}}
 
 ### ====================
 
-GET http://localhost:3000/api/pendingmeals
+GET https://www.palola.vercel.app/api/pendingmeals
 Authorization: {{$dotenv ARDUINO_AUTH_KEY}}
 
 ### ====================
 
-GET http://localhost:3000/api/mealgroups
+GET https://www.palola.vercel.app/api/mealgroups
 Authorization: {{$dotenv ARDUINO_AUTH_KEY}}
 
 ### ====================
 
-POST http://localhost:3000/api/finishmeal
+POST https://www.palola.vercel.app/api/finishmeal
 Content-Type: application/json
 Authorization: {{$dotenv ARDUINO_AUTH_KEY}}
 

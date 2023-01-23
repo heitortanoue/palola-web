@@ -131,6 +131,20 @@ export function getNextMeal ( mealsGroups : MealGroupObject[] ) : MealGroupObjec
     }
 
     // If a next meal was found, return it. Otherwise, return the first meal in the array.
-    console.log(nextMeal || mealsGroups[0])
     return nextMeal || mealsGroups[0];
+}
+
+export const portionOptions = [
+    { value: 0.5, label: "1/2 xícara" },
+    { value: 1, label: "1 xícara" },
+    { value: 1.5, label: "1 e 1/2 xícara" },
+    { value: 2, label: "2 xícaras" },
+    { value: 2.5, label: "2 e 1/2 xícaras" },
+    { value: 3, label: "3 xícaras" },
+]
+export function portionToLabel (portion: number) {
+    return portionOptions.find((option) => option.value === portion)?.label;
+}
+export function labelToPortion (label: string) {
+    return portionOptions.find((option) => option.label === label)?.value;
 }
