@@ -23,6 +23,6 @@ Authorization: {{$dotenv ARDUINO_AUTH_KEY}}
 
 {
     "status": 1,
-    "id": "td5ZZIQ4N5MWE7qSKeHM",
+    "id": "6llFdBPxVSXQIfeaxMhJ",
     "weight": 0.450
 }

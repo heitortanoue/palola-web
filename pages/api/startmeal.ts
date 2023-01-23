@@ -3,10 +3,14 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { database } from '../../utils/firebaseConfig'
 import { machineStatusToObject } from '../../utils/mealsTranslation'
 import { authenticateArduino } from '../../utils/server/authenticateArduino'
+import { DEFAULT_FOOD_QUANTITY } from '../../utils/settings'
 import { MachineStatus, MealGroup, MealStatus, RESPONSE_STATUS } from '../../utils/types'
 
 export default async function startmeal(req: NextApiRequest, res: NextApiResponse) {
-    const { mealName }: { mealName: string } = req.body
+    const { mealName, foodQuantity }: { 
+        mealName: string,
+        foodQuantity: number,
+    } = req.body
 
     if (!authenticateArduino(req)) {
         return res.status(401).json({ message: "Não autorizado" })
@@ -29,7 +33,8 @@ export default async function startmeal(req: NextApiRequest, res: NextApiRespons
     const newMeal = {
         group: mealName,
         date: Timestamp.now(),
-        status: MealStatus.PENDING
+        status: MealStatus.PENDING,
+        foodQuantity: foodQuantity || DEFAULT_FOOD_QUANTITY,
     }
 
     const col = collection(database, 'meals')

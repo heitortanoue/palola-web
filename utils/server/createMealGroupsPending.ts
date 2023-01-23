@@ -11,6 +11,7 @@ interface ReturnType {
     createdMeal: boolean;
     id?: string;
     group?: string;
+    foodQuantity?: number;
 }
 
 export default async function createMealGroupsPending(req : NextApiRequest) : Promise<ReturnType> {
@@ -35,6 +36,7 @@ export default async function createMealGroupsPending(req : NextApiRequest) : Pr
     if (checkMealInterval(currentMealGroup)) {
         const creationResult = await axios.post(URL + "startmeal", {
             mealName: currentMealGroup.name,
+            foodQuantity: currentMealGroup.foodQuantity,
         }, {
             headers: {
                 "Authorization": process.env.ARDUINO_AUTH_KEY

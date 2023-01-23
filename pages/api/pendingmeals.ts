@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { database } from '../../utils/firebaseConfig'
 import { authenticateArduino } from '../../utils/server/authenticateArduino'
 import createMealGroupsPending from '../../utils/server/createMealGroupsPending'
+import { DEFAULT_FOOD_QUANTITY } from '../../utils/settings'
 import { MachineStatus, MealStatus, RESPONSE_STATUS } from '../../utils/types'
 
 export default async function pendingmeals (req: NextApiRequest, res: NextApiResponse) {
@@ -21,13 +22,14 @@ export default async function pendingmeals (req: NextApiRequest, res: NextApiRes
         // 2. past meals
 
         // get the last date from the meal groups, passing the full url
-        const { createdMeal, id : createdId, group : createdGroup } = await createMealGroupsPending(req);
+        const { createdMeal, id : createdId, group : createdGroup, foodQuantity : createdFoodQuantity } = await createMealGroupsPending(req);
 
         if (createdMeal) {
             return res.status(200).json({ 
                 status: RESPONSE_STATUS.SUCESS,
                 group: createdGroup,
                 id: createdId,
+                foodQuantity: createdFoodQuantity || DEFAULT_FOOD_QUANTITY,
             })
         }
 
@@ -46,11 +48,13 @@ export default async function pendingmeals (req: NextApiRequest, res: NextApiRes
 
         // update machine status to BUSY
         await updateDoc(doc(database, 'machine', 'machineStatus'), { status: MachineStatus.BUSY })
+        const { group, foodQuantity } = result.data()
 
         return res.status(200).json({ 
-            status: RESPONSE_STATUS.SUCESS,
-            group: result.data().group,
             id: result.id,
+            status: RESPONSE_STATUS.SUCESS,
+            group,
+            foodQuantity: foodQuantity || DEFAULT_FOOD_QUANTITY,
         })
     })
     .catch((err) => {
