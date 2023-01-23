@@ -10,9 +10,15 @@ import { DEFAULT_FOOD_QUANTITY } from "../settings";
 
 interface ReturnType {
     createdMeal: boolean;
+<<<<<<< HEAD
     id: string;
     group: string;
     foodQuantity: number;
+=======
+    id?: string;
+    group?: string;
+    foodQuantity?: number;
+>>>>>>> e1f675f1aca32177fbc4f9f20ee76bf390368b4b
 }
 
 export default async function createMealGroupsPending(req : NextApiRequest) : Promise<ReturnType | { createdMeal: boolean}> {
@@ -37,7 +43,11 @@ export default async function createMealGroupsPending(req : NextApiRequest) : Pr
     if (checkMealInterval(currentMealGroup)) {
         const creationResult = await axios.post(URL + "startmeal", {
             mealName: currentMealGroup.name,
+<<<<<<< HEAD
             foodQuantity: currentMealGroup.foodQuantity || DEFAULT_FOOD_QUANTITY,
+=======
+            foodQuantity: currentMealGroup.foodQuantity,
+>>>>>>> e1f675f1aca32177fbc4f9f20ee76bf390368b4b
         }, {
             headers: {
                 "Authorization": process.env.ARDUINO_AUTH_KEY
