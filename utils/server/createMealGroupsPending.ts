@@ -9,13 +9,13 @@ import absoluteUrl from "next-absolute-url";
 import { DEFAULT_FOOD_QUANTITY } from "../settings";
 
 interface ReturnType {
-    createdMeal: boolean;
-    id?: string;
-    group?: string;
-    foodQuantity?: number;
+    createdMeal: true;
+    id: string;
+    group: string;
+    foodQuantity: number;
 }
 
-export default async function createMealGroupsPending(req : NextApiRequest) : Promise<ReturnType | { createdMeal: boolean}> {
+export default async function createMealGroupsPending(req : NextApiRequest) : Promise<ReturnType | { createdMeal: false }> {
     const URL = `${absoluteUrl(req).origin}/api/`
 
     const mealGroupsResult = await axios.get(URL + "mealgroups", {
@@ -37,11 +37,7 @@ export default async function createMealGroupsPending(req : NextApiRequest) : Pr
     if (checkMealInterval(currentMealGroup)) {
         const creationResult = await axios.post(URL + "startmeal", {
             mealName: currentMealGroup.name,
-<<<<<<< HEAD
             foodQuantity: currentMealGroup.foodQuantity || DEFAULT_FOOD_QUANTITY,
-=======
-            foodQuantity: currentMealGroup.foodQuantity,
->>>>>>> e1f675f1aca32177fbc4f9f20ee76bf390368b4b
         }, {
             headers: {
                 "Authorization": process.env.ARDUINO_AUTH_KEY

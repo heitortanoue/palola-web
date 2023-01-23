@@ -22,14 +22,14 @@ export default async function pendingmeals (req: NextApiRequest, res: NextApiRes
         // 2. past meals
 
         // get the last date from the meal groups, passing the full url
-        const { createdMeal, id : createdId, group : createdGroup, foodQuantity : createdFoodQuantity } = await createMealGroupsPending(req);
+        const newMeal = await createMealGroupsPending(req);
 
-        if (createdMeal) {
+        if (newMeal.createdMeal) {
             return res.status(200).json({ 
                 status: RESPONSE_STATUS.SUCESS,
-                group: createdGroup,
-                id: createdId,
-                foodQuantity: createdFoodQuantity || DEFAULT_FOOD_QUANTITY,
+                group: newMeal.group,
+                id: newMeal.id,
+                foodQuantity: newMeal.foodQuantity || DEFAULT_FOOD_QUANTITY,
             })
         }
 
