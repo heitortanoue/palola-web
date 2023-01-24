@@ -18,6 +18,7 @@ const COLORS = {
     black: "#202020",
     gray: "#636363",
     grayLight: "#AFAFAF",
+    grayLighter: "#EFEFEF",
     background: "#F6F6F6",
 };
 

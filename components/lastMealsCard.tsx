@@ -24,8 +24,8 @@ export default function LastMealsCard ({ meal } : { meal: Meal }) {
             <div className="px-5">
                 <div className="flex flex-wrap gap-x-3 gap-y-1
                 text-gray-light text-xs items-center">
-                    <div className="flex gap-2">
-                        <i className="fa-solid fa-clock"/>
+                    <div className="flex gap-x-1.5">
+                        <i className="fa-regular fa-clock"/>
                         <div>{refeicaoMoment.format("HH:mm")}</div>
                     </div>
                     {
