@@ -1,10 +1,12 @@
 const COLORS = {
     primary: "#f6b5a6",
-    primaryDark: "#ef7e63",
-    secondary: "#f9ea42",
+    primaryDark: "#EE937D",
+    secondary: "#F4DE50",
     secondaryDark: "#CABD22",
     tertiary: "#b1e5e8",
     tertiaryDark: "#56A7AC",
+    quaternary: "#FBB3BD",
+    quaternaryDark: "#F6919F",
 
     redLight: "#FFDCDC",
     red: "#C03D3D",

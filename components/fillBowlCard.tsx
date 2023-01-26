@@ -45,7 +45,7 @@ export default function FillBowlCard ({ mealWeight, machineStatus } :
             <div className="text-lg text-center font-semibold mb-4">
                 Tigela em {weightPercentage}%
             </div>
-            <Button style={buttonStyles.primary} onClick={fillFunction}>
+            <Button style={buttonStyles.basic + " bg-primary-dark"} onClick={fillFunction}>
                 Abastecer tigela
             </Button>
             <p className="text-center text-xs text-gray mt-2">

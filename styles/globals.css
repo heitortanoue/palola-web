@@ -15,5 +15,5 @@
 }
 
 #toggle:checked ~ .toggleBg {
-    background-color: rgb(var(--primary-dark));
+    background-color: #3EB065;
 }

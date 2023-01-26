@@ -17,6 +17,7 @@ import LoggedRedirect from "../components/loggedRedirect";
 
 import Link from "next/link";
 import WhiteCard from "../components/gereral/whiteCard";
+import FoodEatenCard from "../components/foodEatenCard";
 
 export async function getServerSideProps() {
     const meals = await getDocs(query(collection(database, "meals"), orderBy("date", "desc"), limit(4)))
@@ -82,6 +83,9 @@ export default function Home({ mealsJSON, mealsGroupJSON, weightJSON, machineSta
         <Layout disableBackButton={true}>
             <section>
                 <FillBowlCard mealWeight={weight} machineStatus={machineStatus}/>
+            </section>
+            <section>
+                <FoodEatenCard meals={meals} mealGroups={mealsGroup}/>
             </section>
             <section>
                 <h2 className={textStyles.h2 + " mb-3"}>

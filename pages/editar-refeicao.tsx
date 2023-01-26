@@ -140,7 +140,7 @@ export default function EditarRefeicao({ mealGroupJSON } : { mealGroupJSON: stri
                         </div>
                     </div>
 
-                    <Button style={buttonStyles.primary + " !mt-8"}
+                    <Button style={buttonStyles.basic + " " + "bg-primary-dark !mt-8"}
                     onClick={submitFunction}>
                         Editar refeição
                     </Button>

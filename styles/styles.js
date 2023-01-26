@@ -12,5 +12,6 @@ export const inputStyles = {
 }
 
 export const buttonStyles = {
+    basic: "py-2 w-full rounded-full text-white text-sm font-semibold",
     primary: "py-2 bg-primary w-full rounded-full text-white text-sm font-semibold",
 }

@@ -69,7 +69,7 @@ export function mealCardByTypeObject (mealGp: string) {
         case MealGroup.BREAKFAST:
             return ({
                 icon: "cloud-sun",
-                color: COLORS.primary
+                color: COLORS.quaternary
             })
         case MealGroup.LUNCH:
             return ({
