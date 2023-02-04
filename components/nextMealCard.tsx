@@ -1,6 +1,6 @@
 import { Meal, MealGroupObject } from "../utils/types";
 import WhiteCardTopBorder from "./gereral/whiteCardTopBorder";
-import { mealCardByTypeObject, mealGroupToString } from "../utils/mealsTranslation";
+import { isMealError, mealCardByTypeObject, mealGroupToString } from "../utils/mealsTranslation";
 import { addOpacityHex } from "../utils/colorFunctions";
 import moment from "moment";
 
@@ -22,7 +22,7 @@ export default function NextMealCard ({ meal } : { meal: MealGroupObject }) {
             </div>
             <div className="flex flex-col">
                 <span className="font-bold">{mealGroupToString(meal.name)}</span>
-                <span className="text-sm font-medium">{dateStringCapitalized}</span>
+                {!isMealError(meal) && <span className="text-sm font-medium">{dateStringCapitalized}</span>}
             </div>
         </WhiteCardTopBorder>
     )

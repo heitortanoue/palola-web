@@ -16,7 +16,9 @@ export enum MealGroup {
     BREAKFAST = "breakfast",
     LUNCH = "lunch",
     DINNER = "dinner",
-    MANUAL = "manual"
+    MANUAL = "manual",
+    NONE = "none",
+    ERROR = 'error'
 }
 
 export interface Meal {

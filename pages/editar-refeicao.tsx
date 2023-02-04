@@ -73,7 +73,7 @@ export default function EditarRefeicao({ mealGroupJSON } : { mealGroupJSON: stri
             foodQuantity: portion
         }).then(() => {
             alert.success("Refeição editada com sucesso!")
-            router.push("/")
+            router.push("/", undefined, { unstable_skipClientCache: true })
         }).catch((error) => {
             alert.error("Erro ao editar refeição")
         })

@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import moment from "moment";
 import { timestampToDate } from "./firebaseFunctions";
 import { MealStatus, MealGroup, Meal, MealGroupObject, MachineStatus } from "./types";
@@ -84,6 +85,16 @@ export function mealCardByTypeObject (mealGp: string) {
         case MealGroup.MANUAL:
             return ({
                 icon: "bowl-food",
+                color: COLORS.quinary
+            })
+        case MealGroup.NONE:
+            return ({
+                icon: "slash",
+                color: COLORS.grayLight
+            })
+        case MealGroup.ERROR:
+            return ({
+                icon: "x",
                 color: COLORS.gray
             })
         default:
@@ -104,6 +115,10 @@ export function mealGroupToString(group: MealGroup): string {
             return "Jantar";
         case MealGroup.MANUAL:
             return "Manual"
+        case MealGroup.NONE:
+            return "Nenhuma refeição"
+        case MealGroup.ERROR:
+            return "Erro"
         default:
             return "Erro";
     }
@@ -131,7 +146,17 @@ export function getNextMeal ( mealsGroups : MealGroupObject[] ) : MealGroupObjec
     }
 
     // If a next meal was found, return it. Otherwise, return the first meal in the array.
-    return nextMeal || mealsGroups[0];
+    return nextMeal || {
+        id: '',
+        name: MealGroup.NONE,
+        date: {
+            hours: 0,
+            minutes: 0
+        },
+        foodQuantity: 0,
+        lastDate: new Timestamp(0, 0),
+        disabled: false,
+    };
 }
 
 export const portionOptions = [
@@ -147,4 +172,12 @@ export function portionToLabel (portion: number) {
 }
 export function labelToPortion (label: string) {
     return portionOptions.find((option) => option.label === label)?.value;
+}
+
+export function isMealError (mealGroup: MealGroupObject) {
+    const errorGroups = [
+        MealGroup.NONE,
+        MealGroup.ERROR,
+    ]
+    return errorGroups.includes(mealGroup.name);
 }

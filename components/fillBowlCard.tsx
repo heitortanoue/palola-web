@@ -33,8 +33,8 @@ export default function FillBowlCard ({ mealWeight, machineStatus } :
     }
 
     return (
-        <WhiteCard className="relative pt-16 mt-12">
-            <div>
+        <WhiteCard className="relative pt-20 mt-12">
+            {/* <div>
                 <Image src="/dogbowl.png" alt="Bowl" width={130} height={130}
                 className="absolute inset-x-0 mx-auto -top-10" priority/>
                 <Image src="/dogbowl.png" alt="Bowl" width={130} height={130} priority
@@ -44,9 +44,15 @@ export default function FillBowlCard ({ mealWeight, machineStatus } :
 
             <div className="text-lg text-center font-semibold mb-4">
                 Tigela em {weightPercentage}%
+            </div> */}
+
+            <div>
+                <Image src="/lola.png" alt="Bowl" width={130} height={130}
+                className="!drop-shadow-md absolute inset-x-0 mx-auto -top-14" priority/>
             </div>
+
             <Button style={buttonStyles.basic + " bg-primary-dark"} onClick={fillFunction}>
-                Abastecer tigela
+                Abastecer tigela (1 xícara)
             </Button>
             <p className="text-center text-xs text-gray mt-2">
                 Atualizado {weightDate.fromNow()}

@@ -3,17 +3,25 @@
 @tailwind utilities;
 
 :root {
-    --primary: 246 181 166;
-    --secondary: 249 234 66;
-    --tertiary: 177 229 232;
+  --primary: 246 181 166;
+  --secondary: 249 234 66;
+  --tertiary: 177 229 232;
 
-    --primary-dark: 239 126 99;
+  --primary-dark: 239 126 99;
 }
 
 #toggle:checked ~ .dot {
-    transform: translateX(150%);
+  transform: translateX(150%);
 }
 
 #toggle:checked ~ .toggleBg {
-    background-color: #3EB065;
+  background-color: #3eb065;
+}
+
+.whiteBorder {
+  -webkit-filter: drop-shadow(4px 4px 0 white) drop-shadow(-4px 4px 0 white)
+    drop-shadow(4px -4px 0 white) drop-shadow(-4px -4px 0 white);
+
+  filter: drop-shadow(4px 4px 0 white) drop-shadow(-4px 4px 0 white)
+    drop-shadow(4px -4px 0 white) drop-shadow(-4px -4px 0 white);
 }

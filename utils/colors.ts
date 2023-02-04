@@ -7,6 +7,7 @@ const COLORS = {
     tertiaryDark: "#56A7AC",
     quaternary: "#FBB3BD",
     quaternaryDark: "#F6919F",
+    quinary: "#83D8C4",
 
     redLight: "#FFDCDC",
     red: "#C03D3D",
