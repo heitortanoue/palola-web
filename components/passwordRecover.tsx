@@ -34,7 +34,7 @@ export default function PasswordRecover ({ setRecoverPopUp } : { setRecoverPopUp
                 <p className="text-sm text-gray">Digite seu email para recuperar sua senha</p>
                 <form onSubmit={onSubmit} className="mt-4">
                     <input type="email" name="email" id="email"
-                    placeholder="Endereço de email" className={inputStyles.text}/>
+                    placeholder="Endereço de email" className={inputStyles.text + ' !border !border-gray-light w-full'}/>
                     <Button type="submit" style={buttonStyles.primary + " mt-3"}>
                         Enviar email
                     </Button>
