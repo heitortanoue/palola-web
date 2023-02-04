@@ -16,6 +16,6 @@
     "incremental": true,
     "noImplicitAny": false
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "utils/colors.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "utils/colors.js"],
   "exclude": ["node_modules"]
 }
