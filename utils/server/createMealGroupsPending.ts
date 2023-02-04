@@ -20,7 +20,7 @@ export default async function createMealGroupsPending(req : NextApiRequest) : Pr
 
     const mealGroupsResult = await axios.get(URL + "mealgroups", {
         headers: {
-            "Authorization": process.env.ARDUINO_AUTH_KEY
+            "authorization": process.env.ARDUINO_AUTH_KEY
         }
     })
 
@@ -40,7 +40,7 @@ export default async function createMealGroupsPending(req : NextApiRequest) : Pr
             foodQuantity: currentMealGroup.foodQuantity || DEFAULT_FOOD_QUANTITY,
         }, {
             headers: {
-                "Authorization": process.env.ARDUINO_AUTH_KEY
+                "authorization": process.env.ARDUINO_AUTH_KEY
             }
         }).then((res) => res.data.id)
         .catch((err) => {
